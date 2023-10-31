@@ -1,6 +1,4 @@
 import { useState } from 'react'
-import Modal from './Modal'
-
 const useModal = (initialState = false) => {
 	const [isOpen, setIsOpen] = useState(initialState)
 

@@ -14,10 +14,6 @@ const Notes = () => {
 	const { data, isLoading } = useGetNotesQuery()
 	const [addNote] = useAddNoteMutation()
 
-	useEffect(() => {
-		console.log(data)
-	}, [data])
-
 	const handleAddNote = ({ title, content }) => {
 		addNote({ title, content })
 	}
