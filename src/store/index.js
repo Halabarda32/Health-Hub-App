@@ -49,40 +49,32 @@ export const { useGetRoomsQuery } = roomsApi
 
 const patientsApi = createApi({
 	reducerPath: 'patientsApi',
-	baseQuery: fetchBaseQuery({ baseUrl: '/' }),
-	tagTypes: ['Patients'],
-	endpoints: (builder) => ({
-	  getRoom: builder.query({
-		query: () => 'room',
-		providesTags: ['Room'],
-	  }),
-	  getPatientsById: builder.query({
-		query: (patientId) => `patients/${patientId}`,
-		providesTags: ['Patients'],
-	  }),
-	  getPatientsByRoom: builder.query({
-		query: (roomId) => `rooms/${roomId}`,
-		providesTags: ['Patients'],
-	  }),
-	  findPatient: builder.query({
-		query: (searchPhrase) => `patients/search?searchPhrase=${searchPhrase}`,
-		providesTags: ['Patients'],
-	  }),
+	baseQuery: fetchBaseQuery({
+		baseUrl: 'https://react-auth-5b5a0-default-rtdb.europe-west1.firebasedatabase.app',
 	}),
-  });
-  
-  export const {
-	useGetRoomQuery,
-	useGetPatientsByIdQuery,
-	useGetPatientsByRoomQuery,
-	useFindPatientQuery,
-  } = patientsApi;
-  
+	endpoints: builder => ({
+		getPatients: builder.query({
+			query: () => 'patients.json',
+		}),
+		getPatient: builder.query({
+			query: ({ patientId, roomId }) => `patients/${patientId}/${roomId}.json`,
+		}),
+		
+	}),
+})
+
+export const { useGetPatientsQuery, useGetPatientQuery } = patientsApi
+
+
+
+
+
 export const store = configureStore({
 	reducer: {
 		[notesApi.reducerPath]: notesApi.reducer,
 		[roomsApi.reducerPath]: roomsApi.reducer,
 		[patientsApi.reducerPath]: patientsApi.reducer,
 	},
-	middleware: getDefaultMiddleware => getDefaultMiddleware().concat(notesApi.middleware, roomsApi.middleware, patientsApi.middleware),
+	middleware: getDefaultMiddleware =>
+		getDefaultMiddleware().concat(notesApi.middleware, roomsApi.middleware, patientsApi.middleware),
 })

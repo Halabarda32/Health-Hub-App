@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { Wrapper, FormWrapper, NotesWrapper, StyledFormField } from './Notes.styled'
 import Note from '../components/Molecules/Note/Note'
 import { Button } from '../components/Atoms/Button/Button'

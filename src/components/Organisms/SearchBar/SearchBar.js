@@ -1,23 +1,62 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Input } from '../../Atoms/Input/Input'
-import debounce from 'lodash.debounce'
-import { useCombobox } from 'downshift'
 import { SearchBarWrapper, StatusInfo, SearchWrapper, SearchResults, SearchResultsItems } from './SearchBar.styles'
-import { usePatients } from '../../../hooks/usePatients'
+import { useCombobox } from 'downshift'
+import debounce from 'lodash.debounce'
+import { collection, query, where, getDocs } from 'firebase/firestore'
+import { db } from '../../../firebase'
+import Modal from '../Modal/Modal'
+import useModal from '../Modal/useModal'
 
 export const SearchBar = () => {
-	const [matchingPatients, setMatchingPatients] = useState([])
-	const { findPatient } = usePatients()
+	const [searchTerm, setSearchTerm] = useState('')
+	const [searchResults, setSearchResults] = useState([])
+	const [loading, setLoading] = useState(false)
+	const { isOpen: open, openModalHandler, closeModalHandler } = useModal();
 
-	const getMatchingPatients = debounce(async ({ inputValue }) => {
-		const { patients } = await findPatient(inputValue)
-		setMatchingPatients(patients)
-	}, 500)
 
-	const { isOpen, getMenuProps, getInputProps, highlightedIndex, getItemProps } = useCombobox({
-		items: matchingPatients,
-		onInputValueChange: getMatchingPatients,
+	const handleInputChange = changes => {
+		if (changes.inputValue) {
+			setSearchTerm(changes.inputValue)
+		}
+	}
+
+	const { isOpen, getMenuProps, getInputProps, highlightedIndex, getItemProps, selectedItem } = useCombobox({
+		items: searchResults,
+		onInputValueChange: debounce(handleInputChange, 500),
+		itemToString: item => (item ? item.name : ''),
 	})
+
+	const fetchMatchingPatients = async term => {
+		try {
+			setLoading(true)
+			const patientsCollection = collection(db, 'patients')
+			const q = query(patientsCollection, where('name', '>=', term))
+
+			const querySnapshot = await getDocs(q)
+			const results = []
+
+			querySnapshot.forEach(doc => {
+				const patient = { id: doc.id, ...doc.data() }
+				if (patient.name.includes(term)) {
+					results.push(patient)
+				}
+			})
+
+			setSearchResults(results)
+			setLoading(false)
+		} catch (error) {
+			console.error('Error searching Firestore:', error)
+		}
+	}
+
+	useEffect(() => {
+		if (searchTerm.trim() !== '') {
+			fetchMatchingPatients(searchTerm)
+		} else {
+			setSearchResults([])
+		}
+	}, [searchTerm])
 
 	return (
 		<SearchBarWrapper>
@@ -29,9 +68,9 @@ export const SearchBar = () => {
 			</StatusInfo>
 			<SearchWrapper>
 				<Input {...getInputProps()} name="Search" id="Search" placeholder="Search patient" />
-				<SearchResults isVisable={isOpen && matchingPatients.length > 0} {...getMenuProps()}>
+				<SearchResults isVisable={isOpen && searchResults.length > 0} {...getMenuProps()}>
 					{isOpen &&
-						matchingPatients.map((patient, index) => (
+						searchResults.map((patient, index) => (
 							<SearchResultsItems
 								isHighlighted={highlightedIndex === index}
 								{...getItemProps({ item: patient, index })}
@@ -41,6 +80,11 @@ export const SearchBar = () => {
 						))}
 				</SearchResults>
 			</SearchWrapper>
+			<div>
+				<Modal open={open} closeHandler={closeModalHandler}>
+					{/* <PatientDetails patient={patient} /> */}
+				</Modal>
+			</div>
 		</SearchBarWrapper>
 	)
 }

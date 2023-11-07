@@ -3,30 +3,41 @@ import PatientsListItem from '../../Molecules/PatientsListItem/PatientsListItem'
 import { StyledList } from './PatientsList.styles'
 import { Title } from '../../Atoms/Title/Title'
 import { useParams } from 'react-router-dom'
-import { usePatients } from '../../../hooks/usePatients'
+import { collection, query, onSnapshot, where } from 'firebase/firestore'
+import { db } from '../../../firebase'
 
 const PatientsList = ({ openPatientDetailsHandler }) => {
-	const [patients, setPatients] = useState([])
+	const [patient, setPatient] = useState([])
 	const { id } = useParams()
-	const { getPatients } = usePatients({ roomId: id })
 
 	useEffect(() => {
-		;(async () => {
-			const patients = await getPatients(id)
-			setPatients(patients)
-		})()
-	}, [getPatients, id])
+		const q = query(collection(db, 'patients'), where('room', '==', id))
+		const unsubscribe = onSnapshot(q, querySnapshot => {
+			const patientsData = []
+			querySnapshot.forEach(doc => {
+				patientsData.push({ id: doc.id, ...doc.data() })
+			})
+			setPatient(patientsData)
+		})
+
+		return () => {
+			unsubscribe()
+		}
+	}, [id])
 
 	return (
 		<>
 			<Title>Patients list</Title>
 			<StyledList>
-				{patients.map(patientsData => (
-					<PatientsListItem
-						onClick={() => openPatientDetailsHandler(patientsData.id)}
-						key={patientsData.name}
-						patientsData={patientsData}
-					/>
+				{patient.map(patientsData => (
+					<>
+						<PatientsListItem
+							openPatientDetailsHandler={openPatientDetailsHandler}
+							// onClick={() => openPatientDetailsHandler(patientsData.id)}
+							key={patientsData.name}
+							patientsData={patientsData}
+						/>
+					</>
 				))}
 			</StyledList>
 		</>

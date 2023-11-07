@@ -22,17 +22,17 @@ const PatientsProvider = props => {
 		setPatients(filteredPatients)
 	}
 
-	const addPatientHandler = formValues => {
-		const newPatient = {
-			name: formValues.name,
-			doctor: formValues.doctor,
-			room: formValues.room,
-		}
-		setPatients([newPatient, ...patients])
-	}
+	// const addPatientHandler = formValues => {
+	// 	const newPatient = {
+	// 		name: formValues.name,
+	// 		doctor: formValues.doctor,
+	// 		room: formValues.room,
+	// 	}
+	// 	setPatients([newPatient, ...patients])
+	// }
 
 	return (
-		<PatientsContext.Provider value={{ patients, addPatientHandler, deletePatient }}>
+		<PatientsContext.Provider value={{ patients, deletePatient }}>
 			{props.children}
 		</PatientsContext.Provider>
 	)

@@ -17,6 +17,8 @@ const PatientDetails = ({ patient }) => {
       <StyledDetails>
         <StyledLabel>Atending doctor:</StyledLabel>
         <StyledInfo isBig>{patient.doctor}</StyledInfo>
+        <StyledLabel>Disease:</StyledLabel>
+        <StyledInfo isBig>{patient.disease}</StyledInfo>
         <StyledLabel>Medical Examinations:</StyledLabel>
         {patient.medicalExaminations.map(({ examination, average }) => (
           <StyledSubjectInfo key={examination}>
