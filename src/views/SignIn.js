@@ -6,21 +6,24 @@ import FormField from '../components/Molecules/FormField/FormField'
 import { Button } from '../components/Atoms/Button/Button'
 import AuthDetails from '../helpers/AuthDetails'
 import { useError } from '../hooks/useErrors'
+import { useAuth } from '../store/AuthProvider'
 
 const SignIn = () => {
+	// const { signInHandler } = useAuth()
 	const [email, setEmial] = useState('')
 	const [password, setPassword] = useState('')
-	const { dispatchError } = useError()
+	// const { dispatchError } = useError()
 	const navigate = useNavigate()
 
 	const signInHandler = e => {
 		e.preventDefault()
 		signInWithEmailAndPassword(auth, email, password)
 			.then(userCredential => {
-				navigate('/')
+				navigate('dashboard')
 			})
 			.catch(error => {
-				dispatchError('Invalid email or password')
+				console.log(error)
+				// dispatchError('Invalid email or password')
 			})
 	}
 

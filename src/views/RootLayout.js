@@ -1,27 +1,16 @@
-import { Outlet, Navigate } from 'react-router-dom'
+import { Outlet } from 'react-router-dom'
 import { Wrapper, MainContent } from './Root.styled'
 import MainNavigation from '../components/Organisms/MainNavigation/MainNavigation'
 import { SearchBar } from '../components/Organisms/SearchBar/SearchBar'
 import AsideSection from '../components/Templates/AsideSection/AsideSection'
-import { auth } from '../firebase'
-import { signOut } from 'firebase/auth'
+import { useAuth } from '../store/AuthProvider'
 import NotesWidget from '../components/Organisms/NotesWidget/NotesWidget'
 
 const RootLayout = () => {
-	const userSignOut = () => {
-		signOut(auth)
-			.then(() => {
-				console.log('sign out successful')
-				return <Navigate to="/auth" replace />
-			})
-			.catch(error => {
-				console.log(error)
-			})
-	}
-
+	const { SignOutHandler } = useAuth()
 	return (
 		<Wrapper>
-			<MainNavigation userSignOut={userSignOut} />
+			<MainNavigation SignOutHandler={SignOutHandler} />
 			<SearchBar />
 			<MainContent>
 				<Outlet />
