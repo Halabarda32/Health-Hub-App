@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { auth } from '../firebase'
-import { onAuthStateChanged, signOut } from 'firebase/auth'
+import { onAuthStateChanged } from 'firebase/auth'
 
 const AuthDetails = () => {
 	const [authUser, SetAuthUser] = useState(null)
@@ -18,16 +18,6 @@ const AuthDetails = () => {
 			listen()
 		}
 	}, [])
-
-	// const userSignOut = () => {
-	// 	signOut(auth)
-	// 		.then(() => {
-	// 			console.log('sign out successful')
-	// 		})
-	// 		.catch(error => {
-	// 			console.log(error)
-	// 		})
-	// }
 }
 
 export default AuthDetails

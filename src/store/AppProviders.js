@@ -11,12 +11,12 @@ const AppProviders = ({ children }) => {
 	return (
 		<Provider store={store}>
 			<ThemeProvider theme={theme}>
-				<AuthProvider>
+				{/* <AuthProvider> */}
 				{/* <ErrorProvider> */}
 					<GlobalStyle />
 					{children}
 				{/* </ErrorProvider> */}
-				</AuthProvider>
+				{/* </AuthProvider> */}
 			</ThemeProvider>
 		</Provider>
 	)

@@ -13,7 +13,7 @@ const MainNavigation = ({ SignOutHandler }) => {
 			<StyledLink to="/dashboard">Dashboard</StyledLink>
 			<StyledLink to="/addPatient">Add Patient</StyledLink>
 			<StyledLink to="/notes">Notes</StyledLink>
-			<StyledLink to="/auth" onClick={SignOutHandler}>
+			<StyledLink to="/" onClick={SignOutHandler}>
 				Logout
 			</StyledLink>
 		</Wrapper>

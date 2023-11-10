@@ -1,52 +1,41 @@
-import React, { useContext, useState } from 'react'
-import { onAuthStateChanged, signOut, signInWithEmailAndPassword } from 'firebase/auth'
-import { useNavigate } from 'react-router-dom'
-import { auth } from '../firebase'
-// import { useError } from '../hooks/useErrors'
+import React, { createContext, useState, useEffect } from 'react'
+import { onAuthStateChanged, signOut, getAuth } from 'firebase/auth'
 
-const AuthContext = React.createContext({})
+export const AuthContext = createContext({})
 
 export const AuthProvider = ({ children }) => {
-	const [user, setUserData] = useState(null)
-	const [email, setEmial] = useState('')
-	const [password, setPassword] = useState('')
-	// const { dispatchError } = useError()
-	// const navigate = useNavigate()
+	const auth = getAuth()
+	const [user, setUser] = useState(null)
+	const [loading, setLoading] = useState(true)
 
-	onAuthStateChanged(auth, user => {
-		if (user) {
-			setUserData(user)
-		} else {
-			setUserData(null)
+	useEffect(() => {
+		let unsubscribe
+		unsubscribe = onAuthStateChanged(auth, currentUser => {
+			setLoading(false)
+			if (currentUser) setUser(currentUser)
+			else {
+				setUser(null)
+			}
+		})
+		return () => {
+			if (unsubscribe) unsubscribe()
 		}
-	})
-
-	const signInHandler = async e => {
-		try {
-			e.preventDefault()
-			signInWithEmailAndPassword(auth, email, password)
-		} catch (e) {
-			console.log(e)
-		}
-	}
+	}, [])
 
 	const SignOutHandler = async () => {
 		try {
 			await signOut(auth)
+			setUser(null)
 		} catch (e) {
-			console.log(e)
+			console.error(e)
 		}
 	}
 
-	return <AuthContext.Provider value={{ user, signInHandler, SignOutHandler }}>{children}</AuthContext.Provider>
-}
-
-export const useAuth = () => {
-	const auth = useContext(AuthContext)
-
-	if (!auth) {
-		throw Error('useAuth needs to be used inside AuthContext Provider')
+	const values = {
+		user,
+		setUser,
 	}
+	console.log(values)
 
-	return auth
+	return <AuthContext.Provider value={{ ...values, SignOutHandler }}>{!loading && children}</AuthContext.Provider>
 }

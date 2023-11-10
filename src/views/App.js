@@ -1,71 +1,47 @@
-import { useEffect, useState } from 'react'
-import { useError } from '../hooks/useErrors'
-import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom'
-import RootLayout from './RootLayout'
-import AddPatient from './AddPatinet'
-import ErrorPage from './Error'
-import Dashboard from './Dashboard'
-import Notes from './Notes'
-import SignIn from './SignIn'
-import { auth } from '../firebase'
-import { onAuthStateChanged } from 'firebase/auth'
-import ErrorMessage from '../components/Molecules/ErrorMessage/ErrorMessage'
+// import { useEffect, useState, useContext } from 'react'
+// import { RouterProvider, createBrowserRouter, createRoutesFromElements, Route, Navigate } from 'react-router-dom'
+// import SignIn from './SignIn'
+// import Dashboard from './Dashboard'
+// import AddPatient from './AddPatinet'
+// import Notes from './Notes'
+// import RootLayout from './RootLayout'
+// import { ProtectedRoute } from '../helpers/ProtectedRoute'
+// import { AuthProvider } from '../store/AuthProvider'
+// import { AuthContext } from '../store/AuthProvider'
 
-// const AuthRouter = createBrowserRouter([
-// 	{
-// 		path: '',
-// 		element: <SignIn />,
-// 		errorElement: <ErrorPage />,
-// 		children: [
-// 			{ path: 'auth', element: <SignIn /> },
-// 			{ path: '/', element: <SignIn /> },
-// 		],
-// 	},
-// ])
+// const { user } = useContext(AuthContext)
 
-// const router = createBrowserRouter([
-// 	{
-// 		path: '',
-// 		element: <RootLayout />,
-// 		errorElement: <ErrorPage />,
-// 		children: [
-// 			{
-// 				path: 'dashboard',
-// 				element: <Dashboard />,
-// 				children: [{ path: ':id?', element: <Dashboard /> }],
-// 			},
-// 			{ path: 'addPatient', element: <AddPatient /> },
-// 			{ path: 'dashboard', element: <Dashboard /> },
-// 			{ path: 'notes', element: <Notes /> },
-// 			{ path: 'notes/note', element: <Notes /> },
-// 			{ path: 'auth', element: <SignIn /> },
-// 			{ path: '/', element: <Navigate to="dashboard" /> },
-// 		],
-// 	},
-// ])
+// console.log(user)
 
-function App() {
-	// const [authUser, SetAuthUser] = useState(null)
-	// const { error } = useError()
+// const router = createBrowserRouter(
+// 	createRoutesFromElements(
+// 		<>
+// 			{!user ? (
+// 				<>
+// 					<Route path="/" element={<SignIn />} />
+// 					<Route path="auth" element={<SignIn />} />
+// 				</>
+// 			) : (
+// 				<>
+// 					<Route path="/" element={<RootLayout />}>
+// 						<Route path="dashboard" element={<ProtectedRoute />}>
+// 							<Route path=":id?" element={<Dashboard />} />
+// 						</Route>
+// 						<Route path="addPatient" element={<ProtectedRoute />}>
+// 							<Route index element={<AddPatient />} />
+// 						</Route>
+// 						<Route path="notes" element={<ProtectedRoute />}>
+// 							<Route index element={<Notes />} />
+// 						</Route>
+// 					</Route>
+// 				</>
+// 			)}
+// 		</>
+// 	)
+// )
 
-	// useEffect(() => {
-	// 	const listen = onAuthStateChanged(auth, user => {
-	// 		if (user) {
-	// 			SetAuthUser(user)
-	// 		} else {
-	// 			SetAuthUser(null)
-	// 		}
-	// 	})
+// function App() {
+// 	return <RouterProvider router={router} />
+// }
 
-	// 	return () => {
-	// 		listen()
-	// 	}
-	// }, [])
-
-	// const LogUser = authUser
-	return (
-		<SignIn />
-	)
-}
-
-export default App
+// export default App
