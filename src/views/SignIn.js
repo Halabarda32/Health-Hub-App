@@ -1,22 +1,24 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import FormField from '../components/Molecules/FormField/FormField'
 import { Button } from '../components/Atoms/Button/Button'
 import { signInWithEmailAndPassword, getAuth } from 'firebase/auth'
 import { useNavigate } from 'react-router-dom'
+import { useError } from '../hooks/useErrors'
 
 const SignIn = () => {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
+	const { dispatchError } = useError();
 	const auth = getAuth()
 	const navigate = useNavigate()
 
 	const signInHandler = async e => {
 		try {
 			e.preventDefault()
-			signInWithEmailAndPassword(auth, email, password)
+			await signInWithEmailAndPassword(auth, email, password)
 			navigate('dashboard')
 		} catch (e) {
-			console.log(e)
+			dispatchError('Invalid email or password.')
 		}
 	}
 
