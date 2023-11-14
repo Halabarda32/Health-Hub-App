@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import Note from '../../Molecules/Note/Note'
-import { useSelector } from 'react-redux'
 import { NotesWrapper, WidgetHandler, Wrapper } from './NotesWidget.styled'
 import { useGetNotesQuery } from '../../../store'
 

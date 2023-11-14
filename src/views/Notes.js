@@ -4,37 +4,38 @@ import Note from '../components/Molecules/Note/Note'
 import { Button } from '../components/Atoms/Button/Button'
 import { useAddNoteMutation, useGetNotesQuery } from '../store'
 import { useForm } from 'react-hook-form'
+import { ErrorMessage } from '@hookform/error-message'
+import { useError } from '../hooks/useErrors'
 
 const Notes = () => {
 	const {
 		register,
 		handleSubmit,
-		formState: { errors },
+		formState,
 	} = useForm()
+	const { dispatchError } = useError()
 	const { data, isLoading } = useGetNotesQuery()
 	const [addNote] = useAddNoteMutation()
 
-	useEffect(() => {
-		console.log(data)
-	}, [data])
-
 	const handleAddNote = ({ title, content }) => {
-		addNote({ title, content })
+		if (!title || !content) {
+			dispatchError('Title and content are required')
+		} else {
+			addNote({ title, content })
+		}
 	}
 
 	return (
 		<Wrapper>
 			<FormWrapper onSubmit={handleSubmit(handleAddNote)}>
-				<StyledFormField {...register('title', { required: true })} label="Title" name="title" id="title" />
+				<StyledFormField {...register('title')} label="Title" name="title" id="title" />
 				<StyledFormField
-					{...register('content', { required: true })}
+					{...register('content')}
 					isTextarea
 					label="Content"
 					name="content"
 					id="content"
 				/>
-				{errors.title && <span>Title is required</span>}
-				{errors.content && <span>Content is required</span>}
 				<Button type="submit">Add</Button>
 			</FormWrapper>
 			{isLoading ? (

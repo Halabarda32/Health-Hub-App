@@ -4,7 +4,6 @@ import { AuthContext } from '../store/AuthProvider'
 
 export const ProtectedRoute = () => {
 	const { user } = useContext(AuthContext)
-	console.log(user)
 	if (!user) {
 		return <Navigate to="/" replace />
 	} else {

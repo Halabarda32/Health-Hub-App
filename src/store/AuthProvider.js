@@ -35,7 +35,6 @@ export const AuthProvider = ({ children }) => {
 		user,
 		setUser,
 	}
-	console.log(values)
 
 	return <AuthContext.Provider value={{ ...values, SignOutHandler }}>{!loading && children}</AuthContext.Provider>
 }

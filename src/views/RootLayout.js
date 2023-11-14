@@ -8,7 +8,7 @@ import NotesWidget from '../components/Organisms/NotesWidget/NotesWidget'
 import { AuthContext } from '../store/AuthProvider'
 
 const RootLayout = () => {
-	const {SignOutHandler} = useContext(AuthContext)
+	const { SignOutHandler } = useContext(AuthContext)
 	return (
 		<Wrapper>
 			<MainNavigation SignOutHandler={SignOutHandler} />

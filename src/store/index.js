@@ -1,5 +1,30 @@
-import { configureStore } from '@reduxjs/toolkit'
+import { configureStore, createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { collection, getDocs } from 'firebase/firestore'
+import { db } from '../firebase'
+
+export const fetchRooms = createAsyncThunk('rooms/fetchRooms', async () => {
+	const querySnapshot = await getDocs(collection(db, 'rooms'))
+	const rooms = []
+	querySnapshot.forEach(doc => {
+		rooms.push({ id: doc.id, ...doc.data() })
+	})
+
+	return rooms
+})
+
+const roomsSlice = createSlice({
+	name: 'rooms',
+	initialState: [],
+	reducers: {},
+	extraReducers: builder => {
+		builder.addCase(fetchRooms.fulfilled, (state, action) => {
+			return action.payload
+		})
+	},
+})
+
+export const roomsReducer = roomsSlice.reducer
 
 const notesApi = createApi({
 	reducerPath: 'notesApi',
@@ -33,56 +58,29 @@ const notesApi = createApi({
 
 export const { useGetNotesQuery, useAddNoteMutation, useRemoveNoteMutation } = notesApi
 
-const roomsApi = createApi({
-	reducerPath: 'roomsApi',
+const patientsApi = createApi({
+	reducerPath: 'patientsApi',
 	baseQuery: fetchBaseQuery({
-		baseUrl: '/',
+		baseUrl: 'https://react-auth-5b5a0-default-rtdb.europe-west1.firebasedatabase.app',
 	}),
 	endpoints: builder => ({
-		getRooms: builder.query({
-			query: () => 'rooms',
+		getPatients: builder.query({
+			query: () => 'patients.json',
+		}),
+		getPatient: builder.query({
+			query: ({ patientId, roomId }) => `patients/${patientId}/${roomId}.json`,
 		}),
 	}),
 })
 
-export const { useGetRoomsQuery } = roomsApi
+export const { useGetPatientsQuery, useGetPatientQuery } = patientsApi
 
-const patientsApi = createApi({
-	reducerPath: 'patientsApi',
-	baseQuery: fetchBaseQuery({ baseUrl: '/' }),
-	tagTypes: ['Patients'],
-	endpoints: (builder) => ({
-	  getRoom: builder.query({
-		query: () => 'room',
-		providesTags: ['Room'],
-	  }),
-	  getPatientsById: builder.query({
-		query: (patientId) => `patients/${patientId}`,
-		providesTags: ['Patients'],
-	  }),
-	  getPatientsByRoom: builder.query({
-		query: (roomId) => `rooms/${roomId}`,
-		providesTags: ['Patients'],
-	  }),
-	  findPatient: builder.query({
-		query: (searchPhrase) => `patients/search?searchPhrase=${searchPhrase}`,
-		providesTags: ['Patients'],
-	  }),
-	}),
-  });
-  
-  export const {
-	useGetRoomQuery,
-	useGetPatientsByIdQuery,
-	useGetPatientsByRoomQuery,
-	useFindPatientQuery,
-  } = patientsApi;
-  
 export const store = configureStore({
 	reducer: {
+		rooms: roomsReducer,
 		[notesApi.reducerPath]: notesApi.reducer,
-		[roomsApi.reducerPath]: roomsApi.reducer,
 		[patientsApi.reducerPath]: patientsApi.reducer,
 	},
-	middleware: getDefaultMiddleware => getDefaultMiddleware().concat(notesApi.middleware, roomsApi.middleware, patientsApi.middleware),
+	middleware: getDefaultMiddleware =>
+		getDefaultMiddleware().concat(notesApi.middleware, patientsApi.middleware),
 })

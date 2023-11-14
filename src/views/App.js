@@ -34,7 +34,6 @@ function App() {
 	return (
 		<>
 			{error ? <ErrorMessage message={error} /> : null}
-            {console.log(error)}
 			<RouterProvider router={router} />
 		</>
 	)

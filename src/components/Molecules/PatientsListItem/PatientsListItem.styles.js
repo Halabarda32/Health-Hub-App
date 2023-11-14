@@ -4,7 +4,7 @@ export const Wrapper = styled.li`
 	position: relative;
 	display: flex;
 	align-items: center;
-	cursor: pointer;
+	justify-content: space-between;
 
 	&:not(:last-child)::after {
 		content: '';
@@ -35,6 +35,9 @@ export const StyledAverage = styled.div`
 `
 
 export const StyledInfo = styled.div`
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 	padding: 25px 20px;
 
 	p {
@@ -47,6 +50,10 @@ export const StyledInfo = styled.div`
 		align-items: center;
 		font-weight: bold;
 		font-size: ${({ theme }) => theme.fontSize.l};
+		cursor: pointer;
+		&:hover {
+			text-decoration: underline;
+		}
 	}
 
 	p:last-child {

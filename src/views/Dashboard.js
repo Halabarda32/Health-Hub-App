@@ -1,43 +1,55 @@
-import { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import PatientsList from '../components/Organisms/PatientList/PatientsList'
-import { usePatients } from '../hooks/usePatients'
 import { GroupWrapper, TitleWrapper, Wrapper } from './Dashboard.styled'
 import { Title } from '../components/Atoms/Title/Title'
 import Modal from '../components/Organisms/Modal/Modal'
 import useModal from '../components/Organisms/Modal/useModal'
 import PatientDetails from '../components/Molecules/PatientDetails/PatientDetails'
-import { useGetRoomsQuery } from '../store'
+import { doc, getDoc } from 'firebase/firestore'
+import { db } from '../firebase'
+import { fetchRooms } from '../store'
+import { useDispatch, useSelector } from 'react-redux'
 
 const Dashboard = () => {
-	const [currentPatient, setCurrentPatient] = useState()
-	const { getPatientsById } = usePatients()
+	const [currentPatient, setCurrentPatient] = useState(null)
 	const { id } = useParams()
 	const { isOpen, openModalHandler, closeModalHandler } = useModal()
-	const { data, isLoading } = useGetRoomsQuery()
+	const dispatch = useDispatch()
+	const rooms = useSelector(state => state.rooms)
+	
+	useEffect(() => {
+		dispatch(fetchRooms())
+	}, [dispatch])
 
-	const openPatientDetailsHandler = async id => {
-		const patient = await getPatientsById(id)
-		setCurrentPatient(patient)
-		openModalHandler()
+	const openPatientDetailsHandler = async patientID => {
+		try {
+			const patientRef = doc(db, 'patients', patientID)
+			const patientDoc = await getDoc(patientRef)
+
+			if (patientDoc.exists()) {
+				const patient = patientDoc.data()
+				setCurrentPatient(patient)
+				openModalHandler()
+			} else {
+				console.error('No such patient!')
+			}
+		} catch (error) {
+			console.error('Error fetching patient data:', error)
+		}
 	}
 
-	if (isLoading) {
-		return (
-			<Wrapper>
-				<TitleWrapper>Loading...</TitleWrapper>
-			</Wrapper>
-		)
-	}
 
-	if (!id && data.rooms.length > 0) return <Navigate to={`/dashboard/${data.rooms[0].id}`} />
+	if (!id && rooms.length > 0) {
+		return <Navigate to={`/dashboard/${rooms[0].id}`} />
+	}
 
 	return (
 		<Wrapper>
 			<TitleWrapper>
 				<Title as="h2">Room {id}</Title>
 				<nav>
-					{data.rooms.map(({ id }) => (
+					{rooms.map(({ id }) => (
 						<Link key={id} to={`/dashboard/${id}`}>
 							{id}
 						</Link>

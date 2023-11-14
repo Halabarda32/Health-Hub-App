@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import FormField from '../components/Molecules/FormField/FormField'
 import { Button } from '../components/Atoms/Button/Button'
 import { signInWithEmailAndPassword, getAuth } from 'firebase/auth'
@@ -8,7 +8,7 @@ import { useError } from '../hooks/useErrors'
 const SignIn = () => {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
-	const { dispatchError } = useError();
+	const { dispatchError } = useError()
 	const auth = getAuth()
 	const navigate = useNavigate()
 
