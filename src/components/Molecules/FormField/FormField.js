@@ -13,7 +13,7 @@ const Wrapper = styled.div`
 	}
 `
 
-const FormField = React.forwardRef(({ onChange, value, label, name, id, type = 'text', isTextarea, ...props }, ref) => {
+const FormField = React.forwardRef(({ onChange, required ,value, label, name, id, type = 'text', isTextarea, ...props }, ref) => {
 	return (
 	  <Wrapper>
 		<Label htmlFor={id}>{label}</Label>

@@ -1,7 +1,6 @@
 import { Logo, StyledLink, Wrapper } from './MainNavigation.styled'
-import AuthDetails from '../../../helpers/AuthDetails'
 
-const MainNavigation = ({ userSignOut }) => {
+const MainNavigation = ({ SignOutHandler }) => {
 	return (
 		<Wrapper>
 			<Logo>
@@ -14,10 +13,9 @@ const MainNavigation = ({ userSignOut }) => {
 			<StyledLink to="/dashboard">Dashboard</StyledLink>
 			<StyledLink to="/addPatient">Add Patient</StyledLink>
 			<StyledLink to="/notes">Notes</StyledLink>
-			<StyledLink to="/auth" onClick={userSignOut}>
+			<StyledLink to="/" onClick={SignOutHandler}>
 				Logout
 			</StyledLink>
-			<AuthDetails></AuthDetails>
 		</Wrapper>
 	)
 }

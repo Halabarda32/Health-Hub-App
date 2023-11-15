@@ -42,7 +42,7 @@ const AsideSection = () => {
 
 	return (
 		<AsideSectionWrapper>
-			<AsideSectionHeader>Helpful data</AsideSectionHeader>
+			<AsideSectionHeader>Intranet Articles and more...</AsideSectionHeader>
 			{articles.length > 0 ? (
 				articles.map(({ id, title, category, content, image = null }) => (
 					<IndicatorsWrapper key={id}>

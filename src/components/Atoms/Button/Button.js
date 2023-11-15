@@ -9,5 +9,11 @@ export const Button = styled.button`
 	border: none;
 	font-weight: bold;
 	color: ${({ theme }) => theme.colors.darkGrey};
+	transition: 0.3s;
 	cursor: pointer;
+
+	&:hover {
+		background-color: ${({ theme }) => theme.colors.grey};
+		transition: 0.3s;
+	}
 `

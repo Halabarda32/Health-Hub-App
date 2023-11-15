@@ -12,20 +12,22 @@ import {
 const PatientDetails = ({ patient }) => {
 	return (
 		<Wrapper>
-      <BigAverage value={patient.average}>{patient.average}</BigAverage>
-      <Title isBig>{patient.name}</Title>
-      <StyledDetails>
-        <StyledLabel>Atending doctor:</StyledLabel>
-        <StyledInfo isBig>{patient.doctor}</StyledInfo>
-        <StyledLabel>Medical Examinations:</StyledLabel>
-        {patient.medicalExaminations.map(({ examination, average }) => (
-          <StyledSubjectInfo key={examination}>
-            <StyledInfo>{examination}</StyledInfo>
-            <Average value={average}>{average}</Average>
-          </StyledSubjectInfo>
-        ))}
-      </StyledDetails>
-    </Wrapper>
+			<BigAverage value={patient.average}>{patient.average}</BigAverage>
+			<Title isBig>{patient.name}</Title>
+			<StyledDetails>
+				<StyledLabel>Atending doctor:</StyledLabel>
+				<StyledInfo isBig>{patient.doctor}</StyledInfo>
+				<StyledLabel>Disease:</StyledLabel>
+				<StyledInfo isBig>{patient.disease}</StyledInfo>
+				<StyledLabel>Medical Examinations:</StyledLabel>
+				{patient.medicalExaminations.map(({ examination, average }) => (
+					<StyledSubjectInfo key={examination}>
+						<StyledInfo>{examination}</StyledInfo>
+						<Average value={average}>{average}</Average>
+					</StyledSubjectInfo>
+				))}
+			</StyledDetails>
+		</Wrapper>
 	)
 }
 
