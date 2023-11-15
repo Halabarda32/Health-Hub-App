@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import FormField from '../components/Molecules/FormField/FormField'
 import { Button } from '../components/Atoms/Button/Button'
 import { signInWithEmailAndPassword, getAuth } from 'firebase/auth'
@@ -12,12 +12,18 @@ const SignIn = () => {
 	const auth = getAuth()
 	const navigate = useNavigate()
 
+	useEffect(() => {
+		setTimeout(() => {
+			alert('login: mzaluzny@healthhub.com password: Test1234')
+		}, 500)
+	}, [])
+
 	const signInHandler = async e => {
 		try {
 			e.preventDefault()
 			await signInWithEmailAndPassword(auth, email, password)
 			navigate('dashboard')
-		} catch (e) {
+		} catch (error) {
 			dispatchError('Invalid email or password.')
 		}
 	}

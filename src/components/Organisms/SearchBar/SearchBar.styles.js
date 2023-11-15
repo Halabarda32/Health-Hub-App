@@ -1,6 +1,5 @@
 import styled from 'styled-components'
 import { Input } from '../../Atoms/Input/Input'
-import { ViewWrapper } from '../../Molecules/ViewWrapper/ViewWrapper'
 
 export const SearchBarWrapper = styled.div`
 	display: flex;
@@ -65,7 +64,3 @@ export const SearchResultsItems = styled.li`
 		border-bottom: 1px solid ${({ theme }) => theme.colors.darkGrey};
 	}
 `
-
-export const GroupWrapper = styled(ViewWrapper)`
-  margin: 0;
-`;

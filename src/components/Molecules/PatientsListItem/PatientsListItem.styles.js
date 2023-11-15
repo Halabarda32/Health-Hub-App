@@ -17,15 +17,16 @@ export const Wrapper = styled.li`
 `
 
 export const StyledAverage = styled.div`
-	width: 35px;
-	height: 35px;
-	border-radius: 50px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	padding: 8px;
+	width: 35px;
+	height: 35px;
+	font-weight: bold;
+	border-radius: 50px;
 	font-size: ${({ theme }) => theme.fontSize.s};
 	color: ${({ theme }) => theme.colors.white};
-	font-weight: bold;
 	background: ${({ theme, value }) => {
 		if (value > 4) return theme.colors.success
 		if (value > 2) return theme.colors.warning
@@ -37,8 +38,8 @@ export const StyledAverage = styled.div`
 export const StyledInfo = styled.div`
 	display: flex;
 	flex-direction: column;
-	align-items: center;
-	padding: 25px 20px;
+	align-items: start;
+	padding: 25px 10px;
 
 	p {
 		margin: 0;
@@ -60,4 +61,10 @@ export const StyledInfo = styled.div`
 		font-size: ${({ theme }) => theme.fontSize.m};
 		color: ${({ theme }) => theme.colors.grey};
 	}
+`
+export const StyledBtnsWrapper = styled.div`
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	padding: 25px 10px;
 `

@@ -17,7 +17,7 @@ const Dashboard = () => {
 	const { isOpen, openModalHandler, closeModalHandler } = useModal()
 	const dispatch = useDispatch()
 	const rooms = useSelector(state => state.rooms)
-	
+
 	useEffect(() => {
 		dispatch(fetchRooms())
 	}, [dispatch])
@@ -38,7 +38,6 @@ const Dashboard = () => {
 			console.error('Error fetching patient data:', error)
 		}
 	}
-
 
 	if (!id && rooms.length > 0) {
 		return <Navigate to={`/dashboard/${rooms[0].id}`} />

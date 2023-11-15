@@ -35,7 +35,7 @@ const PatientsList = ({ openPatientDetailsHandler }) => {
 					<>
 						<PatientsListItem
 							openPatientDetailsHandler={openPatientDetailsHandler}
-							key={patientsData.name}
+							key={patientsData.id}
 							patientsData={patientsData}
 						/>
 					</>

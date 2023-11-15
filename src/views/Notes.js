@@ -1,27 +1,22 @@
-import { useEffect } from 'react'
 import { Wrapper, FormWrapper, NotesWrapper, StyledFormField } from './Notes.styled'
 import Note from '../components/Molecules/Note/Note'
 import { Button } from '../components/Atoms/Button/Button'
 import { useAddNoteMutation, useGetNotesQuery } from '../store'
 import { useForm } from 'react-hook-form'
-import { ErrorMessage } from '@hookform/error-message'
 import { useError } from '../hooks/useErrors'
 
 const Notes = () => {
-	const {
-		register,
-		handleSubmit,
-		formState,
-	} = useForm()
+	const { register, handleSubmit, reset } = useForm()
 	const { dispatchError } = useError()
 	const { data, isLoading } = useGetNotesQuery()
 	const [addNote] = useAddNoteMutation()
 
 	const handleAddNote = ({ title, content }) => {
 		if (!title || !content) {
-			dispatchError('Title and content are required')
+			dispatchError('Title and content are required!')
 		} else {
 			addNote({ title, content })
+			reset()
 		}
 	}
 
@@ -29,13 +24,7 @@ const Notes = () => {
 		<Wrapper>
 			<FormWrapper onSubmit={handleSubmit(handleAddNote)}>
 				<StyledFormField {...register('title')} label="Title" name="title" id="title" />
-				<StyledFormField
-					{...register('content')}
-					isTextarea
-					label="Content"
-					name="content"
-					id="content"
-				/>
+				<StyledFormField {...register('content')} isTextarea label="Content" name="content" id="content" />
 				<Button type="submit">Add</Button>
 			</FormWrapper>
 			{isLoading ? (
