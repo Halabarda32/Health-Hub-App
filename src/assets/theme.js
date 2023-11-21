@@ -1,7 +1,7 @@
 export const theme = {
 	colors: {
 		white: '#FFFFFF',
-		lightGrey: '#F7F8FA',
+		lightGrey: '#dfeaff5c',
 		grey: '#C0C7D6',
 		darkGrey: '#737C8E',
 		black: '#111111',
@@ -9,6 +9,7 @@ export const theme = {
 		error: '#CB8581',
 		warning: '#E1D888',
 		lightPurple: '#ECEFF7',
+		blue: '#5486e9',
 	},
 	fontSize: {
 		xl: '24px',
