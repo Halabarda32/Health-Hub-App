@@ -10,7 +10,8 @@ export const Wrapper = styled.div`
 	background: white;
 	transform: ${({ isOpen }) => (isOpen ? 'translateX(0)' : 'translateX(400px)')};
 	transition: transform 0.6s ease-in-out;
-	border: 2px solid ${({ theme }) => theme.colors.darkGrey};
+	border: 2px solid ${({ theme }) => theme.colors.blue};
+	border-radius: 8px;
 `
 
 export const WidgetHandler = styled.button`
@@ -19,7 +20,7 @@ export const WidgetHandler = styled.button`
 	left: -55px;
 	width: 80px;
 	height: 30px;
-	background-color: ${({ theme }) => theme.colors.darkGrey};
+	background-color: ${({ theme }) => theme.colors.blue};
 	color: white;
 	border: none;
 	border-radius: 8px 8px 0 0;

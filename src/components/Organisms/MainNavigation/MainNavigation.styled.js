@@ -14,7 +14,7 @@ export const Wrapper = styled.nav`
 `
 
 export const Logo = styled.div`
-	background-color: ${({ theme }) => theme.colors.darkGrey};
+	background-color: ${({ theme }) => theme.colors.blue};
 	width: 100%;
 	height: 60px;
 	display: flex;
